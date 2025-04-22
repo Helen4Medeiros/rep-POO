@@ -21,9 +21,9 @@ print(f'VOLUME = {vol:.3f}')
 
 # 2416 - CORRIDA
 
-# # 1015 - DISTÂNCIA ENTRE DOIS PONTOS (?)
-x1, x2 = map(float, input().split())
-y1, y2 = map(float, input().split())
+# 1015 - DISTÂNCIA ENTRE DOIS PONTOS 
+x1, y1 = map(float, input().split())
+x2, y2 = map(float, input().split())
 
 d = math.sqrt((x2-x1)**2 + (y2-y1)**2)
 
