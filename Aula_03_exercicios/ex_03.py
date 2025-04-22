@@ -2,13 +2,17 @@ import math
 # 1004 - PRODUTO SIMPLES
 a= int(input())
 b= int(input())
+
 prod= a*b
+
 print(f'PROD= {prod}')
 
 # 1005 - MÉDIA 1
 a= float(input())
 b= float(input())
+
 media= (a*3.5 + b*7.5)/ 11
+
 print(f'MEDIA = {media:.5f}')
 
 # 1011 - ESFERA 
@@ -20,6 +24,11 @@ vol = (4/3) * pi * r ** 3
 print(f'VOLUME = {vol:.3f}')
 
 # 2416 - CORRIDA
+c, n = map(int, input().split())
+
+pt = c % n 
+
+print(pt)
 
 # 1015 - DISTÂNCIA ENTRE DOIS PONTOS 
 x1, y1 = map(float, input().split())
