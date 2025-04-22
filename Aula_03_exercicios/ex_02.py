@@ -12,9 +12,8 @@ media= (p_bim*2 + s_bim*3)//5
 print(f'Média parcial: {media}')
 
 # 03
-print('Digite a base e a altura do retângulo:')
-b= int(input())
-a= int(input())
+b= int(input('Digite a base: '))
+a= int(input('Digite a altura: '))
 print(f'Área: {b*a:.2f} - Perímetro: {2*(b+a):.2f} - Diagonal: {math.sqrt(b**2+a**2):.2f}')
 
 # 04
