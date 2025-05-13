@@ -36,16 +36,16 @@ class Agua:
         self.ano = 2025 
         self.c = 0
     def Conta(self):
-        if self.consumo == 10:
+        if self.c == 10:
             return 38
-        if 11 <= self.consumo <= 20:
-            return 38 + (self.consumo - 10) * 5
+        if 11 <= self.c <= 20:
+            return 38 + (self.c - 10) * 5
         if self.consumo >= 21:
-            return 88 + (self.consumo - 20) * 6
+            return 88 + (self.c - 20) * 6
         
 x = Agua()
 x.mes = int(input('Qual mês da conta que você quer pagar?'))
 x.ano = int(input('Qual o ano da conta que você quer pagar?'))
-x.consumo = int(input('Qual foi o consumo de água do mês que você quer pagar?'))
+x.c = int(input('Qual foi o consumo de água do mês que você quer pagar?'))
 print(x.Conta())
         
