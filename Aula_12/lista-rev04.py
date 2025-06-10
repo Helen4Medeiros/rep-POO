@@ -20,7 +20,7 @@ class Viagem:
     def consumo(self):
         return self.__distancia / self.__litros
     def __str__(self):
-        f'O consumo foi de {self.consumo()}'
+        return f'O consumo foi de {self.consumo()}'
     
 class ViagemUI: 
     @staticmethod
@@ -64,7 +64,7 @@ class Pais:
 
     def densidade(self): return self.__pop / self.__area
     def __str__(self):
-        f'A densidade é de {self.densidade()}'
+        return f'A densidade é de {self.densidade()}'
     
 class ParcialUI: 
     @staticmethod
