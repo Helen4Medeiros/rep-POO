@@ -19,6 +19,8 @@ class Viagem:
 
     def consumo(self):
         return self.__distancia / self.__litros
+    def __str__(self):
+        f'O consumo foi de {self.consumo()}'
     
 class ViagemUI: 
     @staticmethod
@@ -37,7 +39,7 @@ class ViagemUI:
         x.set_destino(input('Informe seu destino: '))
         x.set_distancia(float(input('Informe a distancia em Km: ')))
         x.set_litros(float(input('Informe os litros: ')))
-        print(f'O consumo foi de {x.consumo()}')
+        print(x)
 
 ViagemUI.main()
         
@@ -61,6 +63,8 @@ class Pais:
     def get_area(self): return self.__area
 
     def densidade(self): return self.__pop / self.__area
+    def __str__(self):
+        f'A densidade é de {self.densidade()}'
     
 class ParcialUI: 
     @staticmethod
@@ -79,7 +83,7 @@ class ParcialUI:
         x.set_nome(input('Informe o nome do país: '))
         x.set_populacao(int(input('Informe o nº de habitantes do país: ')))
         x.set_area(float(input('informe a área em km2: ')))
-        print(f'A densidade demográfica é de {x.densidade()} km2')
+        print(x)
 
 ParcialUI.main()
 
