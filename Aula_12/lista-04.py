@@ -1,70 +1,78 @@
-import random
-class Bingo:
-    def __init__(self):
-        self.__num_bolas = 0
-        self.__bolas_sorteadas = []
-        self.__all_bolas = []
+class Pais:
+    def __init__(self, i, n, p, a):
+        self.__id = i
+        self.__nome = n
+        self.__pop = p
+        self.__area = a
 
-    def iniciar(self, num_bolas):
-        self.__num_bolas = num_bolas
-        self.__bolas_sorteadas = []
-        self.__all_bolas = list(range(1, num_bolas + 1))
-        random.shuffle(self.__all_bolas)
-
-    def sortear(self):
-        if not self.__all_bolas:
-            return -1 
-
-        bola = self.__all_bolas.pop()
-        self.__bolas_sorteadas.append(bola)
-        return bola
+    def get_id(self): return self.__id
+    def get_nome(self): return self.__nome
+    def get_pop(self): return self.__pop
+    def get_area(self): return self.__area
     
-    def sorteados(self):
-        return self.__bolas_sorteadas.copy()
+    def densidade(self): return self.__pop / self.__area
     
-    def fim(self):
-        return len(self.__bolas_sorteadas) >= self.__num_bolas
+    def __str__(self):
+        return f'id: {self.__id} | nome: {self.__nome} | população: {self.__pop} | área: {self.__area} | densidade: {self.densidade():.1f}'
     
-class BingoUI:
-    __bingo = None
-
+class PaisUI:
+    __pais = []
     @classmethod
     def main(cls):
         op = 0
-        while op != 4:
-            op = cls.menu()
-            if op == 1: BingoUI.iniciar()
-            if op == 2: BingoUI.sortear()
-            if op == 3: BingoUI.sorteados()
+        while op != 7:
+            op = PaisUI.menu()
+            if op == 1: PaisUI.inserir()
+            if op == 2: PaisUI.listar()
+            if op == 3: PaisUI.atualizar()
+            if op == 4: PaisUI.excluir()
+            if op == 5: PaisUI.mais_pop()
+            if op == 6: PaisUI.mais_pov()
     @classmethod
     def menu(cls):
-        print('1- Iniciar, 2- Sortear, 3- Números sorteados, 4- Sair')
-        return int(input('Escolha uma opção: '))
+        print("1-Inserir, 2-Listar, 3-Atualizar, 4-Excluir, 5- Mais Populoso, 6- Mais Povoado, 7- Fim")
+        return int(input("Escolha uma opção: "))
     @classmethod
-    def iniciar(cls):
-        num = random.randint(50, 90)
-        cls.__bingo = Bingo()
-        cls.__bingo.iniciar(num)
-        print(f'Jogo iniciado com {num} bolas')
+    def inserir(cls):
+        id = int(input("Insira o id do país: "))
+        nome = input("Insira o nome: ")
+        pop = int(input("Insira a população: "))
+        area = int(input("Insira a área: "))
+        c = Pais(id, nome, pop, area)
+        cls.__pais.append(c)
     @classmethod
-    def sortear(cls): 
-        if cls.__bingo is None:
-           return print("Inicie um jogo primeiro.")
-            
-        bola = cls.__bingo.sortear()
-        if bola == -1:
-            print("Todas as bolas já foram sorteadas. O jogo terminou!")
-        else:
-            print(f"Bola sorteada: {bola}")
-    @classmethod
-    def sorteados(cls):
-        if cls.__bingo is None:
-           return print("Você precisa iniciar um jogo primeiro.")
-            
-        bolas = cls.__bingo.sorteados()
-        if not bolas:
-            print("Nenhuma bola foi sorteada ainda.")
-        else:
-            print("Bolas sorteadas até agora:", sorted(bolas))
+    def listar(cls):
+        for c in cls.__pais:
+            print(c)
+    @classmethod   
+    def atualizar(cls):
+        id = int(input('Digite o id do país que deseja atualizar: '))
+        for c in cls.__pais:
+            if c.get_id() == id:
+                print(c)
+                nome = input("Informe o novo nome: ")
+                pop = input("Informe a nova população: ")
+                area = input("Informe a nova área: ")
+                d = Pais(id, nome, pop, area)
+                cls.__pais.remove(c)
+                cls.__pais.append(d)
 
-BingoUI.main()
+        else: print('O id não consta na lista de países.')  
+    @classmethod
+    def excluir(cls):
+        id = int(input('Informe o id: '))
+        for c in cls.__pais:
+            if c.get_id() == id:
+                cls.__pais.remove(c)
+                print('País removido.')
+    @classmethod
+    def mais_pop(cls):
+        mais_pop = max(cls.__pais, key= lambda c: c.get_pop())
+        print(mais_pop)
+    @classmethod
+    def mais_pov(cls):
+        mais_pov = max(cls.__pais, key= lambda c: c.densidade())
+        print(mais_pov)
+
+PaisUI.main()
+    
