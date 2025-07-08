@@ -1,78 +1,80 @@
-class Pais:
-    def __init__(self, i, n, p, a):
+class Contato:
+    def __init__(self, i, n, e, f):
         self.__id = i
         self.__nome = n
-        self.__pop = p
-        self.__area = a
-
-    def get_id(self): return self.__id
-    def get_nome(self): return self.__nome
-    def get_pop(self): return self.__pop
-    def get_area(self): return self.__area
-    
-    def densidade(self): return self.__pop / self.__area
-    
+        self.__email = e
+        self.__fone = f
+    def get_id(self):
+        return self.__id    
+    def get_nome(self):
+        return self.__nome    
     def __str__(self):
-        return f'id: {self.__id} | nome: {self.__nome} | população: {self.__pop} | área: {self.__area} | densidade: {self.densidade():.1f}'
-    
-class PaisUI:
-    __pais = []
-    @classmethod
+        return f"{self.__id} - {self.__nome} - {self.__email} - {self.__fone}"
+
+class ContatoUI:
+    __contatos = []
+    @classmethod    
     def main(cls):
         op = 0
-        while op != 7:
-            op = PaisUI.menu()
-            if op == 1: PaisUI.inserir()
-            if op == 2: PaisUI.listar()
-            if op == 3: PaisUI.atualizar()
-            if op == 4: PaisUI.excluir()
-            if op == 5: PaisUI.mais_pop()
-            if op == 6: PaisUI.mais_pov()
-    @classmethod
+        while op != 6:
+            op = ContatoUI.menu()
+            if op == 1: ContatoUI.inserir()
+            if op == 2: ContatoUI.listar()
+            if op == 3: ContatoUI.atualizar()
+            if op == 4: ContatoUI.excluir()
+            if op == 5: ContatoUI.pesquisar()
+    @classmethod    
     def menu(cls):
-        print("1-Inserir, 2-Listar, 3-Atualizar, 4-Excluir, 5- Mais Populoso, 6- Mais Povoado, 7- Fim")
+        print("1-Inserir, 2-Listar, 3-Atualizar, 4-Excluir, 5-Pesquisar, 6-Fim")
         return int(input("Escolha uma opção: "))
-    @classmethod
+    @classmethod    
     def inserir(cls):
-        id = int(input("Insira o id do país: "))
-        nome = input("Insira o nome: ")
-        pop = int(input("Insira a população: "))
-        area = int(input("Insira a área: "))
-        c = Pais(id, nome, pop, area)
-        cls.__pais.append(c)
-    @classmethod
+        id = int(input("Informe o id do contato: "))
+        nome = input("Informe o nome: ")
+        email = input("Informe o e-mail: ")
+        fone = input("Informe o fone: ")
+        c = Contato(id, nome, email, fone)
+        cls.__contatos.append(c)
+
+    @classmethod    
     def listar(cls):
-        for c in cls.__pais:
+        #print(cls.__contatos)
+        if len(cls.__contatos) == 0: print("Nenhum contato cadastrado")
+        for c in cls.__contatos:
             print(c)
-    @classmethod   
+
+    @classmethod    
+    def listar_id(cls, id):
+        for c in cls.__contatos:
+            if c.get_id() == id: return c
+        return None    
+
+    @classmethod    
     def atualizar(cls):
-        id = int(input('Digite o id do país que deseja atualizar: '))
-        for c in cls.__pais:
-            if c.get_id() == id:
-                print(c)
-                nome = input("Informe o novo nome: ")
-                pop = input("Informe a nova população: ")
-                area = input("Informe a nova área: ")
-                d = Pais(id, nome, pop, area)
-                cls.__pais.remove(c)
-                cls.__pais.append(d)
+        cls.listar()
+        id = int(input("Informe o id do contato a ser atualizado: "))
+        c = cls.listar_id(id)
+        if c == None: print("Contato não encontrado")
+        else:
+            cls.__contatos.remove(c) 
+            nome = input("Informe o novo nome: ")
+            email = input("Informe o novo e-mail: ")
+            fone = input("Informe o novo fone: ")
+            c = Contato(id, nome, email, fone)
+            cls.__contatos.append(c)
 
-        else: print('O id não consta na lista de países.')  
-    @classmethod
+    @classmethod    
     def excluir(cls):
-        id = int(input('Informe o id: '))
-        for c in cls.__pais:
-            if c.get_id() == id:
-                cls.__pais.remove(c)
-                print('País removido.')
-    @classmethod
-    def mais_pop(cls):
-        mais_pop = max(cls.__pais, key= lambda c: c.get_pop())
-        print(mais_pop)
-    @classmethod
-    def mais_pov(cls):
-        mais_pov = max(cls.__pais, key= lambda c: c.densidade())
-        print(mais_pov)
+        cls.listar()
+        id = int(input("Informe o id do contato a ser excluído: "))
+        c = cls.listar_id(id)
+        if c == None: print("Contato não encontrado")
+        else: cls.__contatos.remove(c)
 
-PaisUI.main()
-    
+    @classmethod    
+    def pesquisar(cls):
+        nome = input("Informe o nome: ")
+        for c in cls.__contatos:
+            if c.get_nome().startswith(nome): print(c)
+
+ContatoUI.main()
