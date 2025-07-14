@@ -2,7 +2,69 @@ from datetime import datetime
 from enum import Enum
 
 # 1) UM PACIENTE
+class Paciente: 
+    def __init__(self, n, c, t, nasc):
+        self.__nome = n
+        self.__cpf = c
+        self.__telefone = t
+        self.__nascimento = datetime.strptime(nasc, '%d/%m/%Y')
+        
+    def get_nome(self): return self.__nome
+    def get_cpf(self): return self.__cpf
+    def get_telefone(self): return self.__telefone
+    def get_nascimento(self): return self.__nascimento
 
+    def idade(self):
+        hoje = datetime.now()
+        dv = hoje - self.__nascimento
+        anos = dv.days // 365
+        meses = dv.days % 365 // 30
+        return f'{anos} anos e {meses} meses'
+
+    def __str__(self):
+        return f'Nome: {self.__nome} - CPF: {self.__cpf} - Telefone: {self.__telefone} - Data de nascimento: {self.__nascimento} - Idade: {self.idade()}'
+
+class PacienteUI: 
+    __pacientes = []
+    @classmethod
+    def main(cls):
+        op = 0
+        while op != 5: 
+            op = PacienteUI.menu()
+            if op == 1: PacienteUI.cadastrar()
+            if op == 2: PacienteUI.listar()
+            if op == 3: PacienteUI.atualizar()
+    @classmethod
+    def menu(cls):
+        print('1- Cadastrar, 2- Listar, 3- Atualizar, 5- Fim')
+        return int(input('Informe nº do serviço que deseja realizar: '))
+    @classmethod
+    def cadastrar(cls):
+        nome = input('Informe o nome do paciente: ')
+        cpf = input('Insira o CPF: ')
+        telefone = input('Insira o telefone: ')
+        data_n = input('Insira a data de nascimento (XX/XX/XXXX): ')
+        p = Paciente(nome, cpf, telefone, data_n)
+        cls.__pacientes.append(p)
+    @classmethod
+    def listar(cls):
+        for p in cls.__pacientes:
+            print(p)
+    @classmethod
+    def atualizar(cls):
+        cpf = input('Informe o CPF que deseja atualizar: ')
+        for p in cls.__pacientes:
+            if p.get_cpf() == cpf:
+                print(p)
+                nome = input('Informe o nome do paciente: ')
+                cpf = input('Insira o CPF: ')
+                telefone = input('Insira o telefone: ')
+                data_n = input('Insira data de nascimento (XX/XX/XXXX): ')
+                novo = Paciente(nome, cpf, telefone, data_n)
+                cls.__pacientes.remove(p)
+                cls.__pacientes.append(novo)
+
+PacienteUI.main()
 
 # 2) UM BOLETO
 class Pagamento(Enum):
@@ -96,8 +158,3 @@ class BoletoUI:
         # else: print('Nenhum boleto cadastrado.')
 
 BoletoUI.main()
-
-    
-
-
-
