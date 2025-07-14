@@ -160,3 +160,4 @@ class B_PUI:
         else: print('Nenhum boleto cadastrado.')
 
 B_PUI.main()
+
