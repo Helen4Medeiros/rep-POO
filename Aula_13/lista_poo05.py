@@ -22,7 +22,13 @@ class Paciente:
         return f'{anos} anos e {meses} meses'
 
     def __str__(self):
-        return f'Nome: {self.__nome} - CPF: {self.__cpf} - Telefone: {self.__telefone} - Data de nascimento: {self.__nascimento} - Idade: {self.idade()}'
+        return (
+            f'Nome: {self.__nome}\n'
+            f'CPF: {self.__cpf}\n'
+            f'Telefone: {self.__telefone}\n'
+            f'Nascimento: {self.__nascimento}\n'
+            f'Idade: {self.idade()}'
+        )
 
 class PacienteUI: 
     __pacientes = []
@@ -150,11 +156,125 @@ class BoletoUI:
         else: print('Não cadastrado.')
     @classmethod
     def pagar(cls):
-        pass
-        # else: print('Nenhum boleto cadastrado.')
+        if not cls.__boleto:
+            print('Nenhum boleto cadastrado.')
+            return
+        cod = input('Informe o código de barras do boleto a pagar: ')
+        for b in cls.__boleto:
+            if b.get_codbarras() == cod:
+                try: 
+                    valor_pg = float(input('Informe o valor a pagar: '))
+                    b.pagar(valor_pg)
+                    print('Pagamento registrado com sucesso.')
+                except ValueError as e:
+                    print(e)
+                return
+        print('Boleto não encontrado')
     @classmethod
     def situ(cls):
-        pass
-        # else: print('Nenhum boleto cadastrado.')
+        if not cls.__boleto:
+            print('Nenhum boleto cadastrado.')
+            return
+        cod = input('Informe o código de barras do boleto para consultá-lo: ')
+        for b in cls.__boleto:
+            if b.get_codbarras() == cod:
+                print(f'Situação: {b.get_situ_pagamento().name}')
 
 BoletoUI.main()
+
+# 3) UMA AGENDA DE CONTATOS
+class Contato:
+    def __init__(self, i, n, e, f, d):
+        self.__id = i
+        self.__nome = n
+        self.__email = e
+        self.__fone = f
+        self.__nascimento = datetime.strptime(d, '%d/%m/%Y')
+    
+    def get_id(self): return self.__id
+    def get_nome(self): return self.__nome
+    def get_email(self): return self.__email
+    def get_fone(self): return self.__fone
+    def get_nascimento(self): return self.__nascimento
+
+    def __str__(self):
+        return(
+            f'id: {self.__id}\n'
+            f'nome: {self.__nome}\n'
+            f'email: {self.__email}\n'
+            f'fone: {self.__fone}\n'
+            f'nascimento: {self.__nascimento}\n'
+        )
+    
+class ContatoUI:
+    __contatos = []
+    @classmethod
+    def main(cls): 
+        op = 0
+        while op != 7:
+            op = ContatoUI.menu()
+            if op == 1: ContatoUI.inserir()
+            if op == 2: ContatoUI.listar()
+            if op == 3: ContatoUI.atualizar()
+            if op == 4: ContatoUI.excluir()
+            if op == 5: ContatoUI.pesquisar()
+            if op == 6: ContatoUI.aniv()
+    @classmethod
+    def menu(cls):
+        print('1- Inserir, 2- Listar, 3- Atualizar, 4- Excluir, 5- Pesquisar, 6- Aniversariantes, 7- Sair')
+        op = int(input('Qual ação deseja realizar? '))
+        return op 
+    @classmethod
+    def inserir(cls): 
+        id = int(input("Insira o id do contato: "))
+        nome = input("Insira o nome: ")
+        email = input("Insira o e-mail: ")
+        fone = input("Insira o fone: ")
+        data_n = input('Insira a data de nascimento DD/MM/AAAA: ')
+        c = Contato(id, nome, email, fone, data_n)
+        cls.__contatos.append(c)
+    @classmethod
+    def listar(cls):
+        for c in cls.__contatos:
+            print(c)
+    @classmethod
+    def atualizar(cls):
+        id = int(input('Digite o id que deseja atualizar: '))
+        for c in cls.__contatos:
+            if c.get_id() == id:
+                print(c)
+                cls.__contatos.remove(c)
+                nome = input('Insira o novo nome do contato: ')
+                email = input('Insira o novo email: ')
+                fone = input('Insira o novo fone: ')
+                data_n = input('Insira a nova datd de nascimento DD/MM/AAAA: ')
+                novo = Contato(id, nome, email, fone, data_n)
+                cls.__contatos.append(novo)
+            else: print('O id não foi encontrado.')
+    @classmethod
+    def excluir(cls):
+        id = int(input('Informe o id: '))
+        for c in cls.__contatos:
+            if c.get_id() == id:
+                cls.__contatos.remove(c)
+                print('Contato removido.')
+            else: print('O id não foi encontrado.')
+    @classmethod
+    def pesquisar(cls):
+        nome = input("Informe o nome: ")
+        for c in cls.__contatos:
+            if c.get_nome().startswith(nome): print(c)
+            else: print('O nome não foi encontrado.')
+    @classmethod
+    def aniv(cls):
+        mes = int(input('Digite o nº do mês: '))
+        e = False
+        for c in cls.__contatos:
+            if c.get_nascimento().month == mes:
+                print(c)
+                e = True
+        if not e: print('Nenhum contato faz aniversário neste mês.')
+
+ContatoUI.main()
+
+    
