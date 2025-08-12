@@ -35,7 +35,8 @@ class Cliente:
             f"Email: {self.__email}\n"
             f"Fone: {self.__fone}\n"
         )
-    
+
+    @staticmethod
     def to_dict(self):
         return {
             "id": self.get_id(),
