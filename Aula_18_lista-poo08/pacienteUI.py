@@ -15,5 +15,5 @@ class PacienteUI:
             f = str(fone)
             nasc = datetime.strptime(nascimento, '%d/%m/%Y')
             p = Paciente(n, c, f, nasc)
-            st.write(p)
-            # st.write(p.idade())
+            # st.write(p)
+            st.write(p.idade())
