@@ -1,7 +1,7 @@
 from templates.manterclienteUI import ManterClienteUI
 from templates.manterservicoUI import ManterServicoUI
 from templates.manterhorarioUI import ManterHorarioUI
-import streamlit as st
+import streamlit as st # type: ignore
 
 class IndexUI:
     def menu_admin():            
