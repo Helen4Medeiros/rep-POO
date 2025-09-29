@@ -7,6 +7,8 @@ class View:
     # cliente
     def cliente_listar():
         return ClienteDAO.listar()
+    def cliente_listar_id():
+        return ClienteDAO.listar_id()
     def cliente_inserir(nome, email, fone):
         cliente = Cliente(0, nome, email, fone)
         ClienteDAO.inserir(cliente)
@@ -20,6 +22,8 @@ class View:
     # serviço
     def servico_listar():
         return ServicoDAO.listar()
+    def servico_listar_id():
+        return ServicoDAO.listar_id()
     def servico_inserir(descricao, valor):
         servico = Servico(0, descricao, valor)
         ServicoDAO.inserir(servico)
@@ -31,19 +35,21 @@ class View:
         ServicoDAO.excluir(servico)
 
     # horário
-    def horario_inserir(data, confirmado, id_cliente, id_servico):
+    def horario_inserir(data, confirmado, id_cliente, id_servico, id_profissional):
         c = Horario(0, data)
         c.set_confirmado(confirmado)
         c.set_id_cliente(id_cliente)
         c.set_id_servico(id_servico)
+        c.set_id_profissional(id_profissional)
         HorarioDAO.inserir(c)
     def horario_listar():
         return HorarioDAO.listar()
-    def horario_atualizar(id, data, confirmado, id_cliente, id_servico):
+    def horario_atualizar(id, data, confirmado, id_cliente, id_servico, id_profissional):
         c = Horario(id, data)
         c.set_confirmado(confirmado)
         c.set_id_cliente(id_cliente)
         c.set_id_servico(id_servico)
+        c.set_id_profissional(id_profissional)
         HorarioDAO.atualizar(c)
     def horario_excluir(id):
         c = Horario(id, None)
@@ -54,6 +60,7 @@ class View:
         profissional = Profissional(0, nome, especialidade, conselho)
         ProfissionalDAO.inserir(profissional)
     def profissional_listar(): return ProfissionalDAO.listar()
+    def profissional_listar_id(): return ProfissionalDAO.listar_id()
     def profissional_atualizar(id, nome, especialidade, conselho):
         profissional = Profissional(id, nome, especialidade, conselho)
         ProfissionalDAO.atualizar(profissional)
