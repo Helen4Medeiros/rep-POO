@@ -7,8 +7,8 @@ class View:
     # cliente
     def cliente_listar():
         return ClienteDAO.listar()
-    def cliente_listar_id():
-        return ClienteDAO.listar_id()
+    def cliente_listar_id(id):
+        return ClienteDAO.listar_id(id)
     def cliente_inserir(nome, email, fone):
         cliente = Cliente(0, nome, email, fone)
         ClienteDAO.inserir(cliente)
@@ -22,8 +22,8 @@ class View:
     # serviço
     def servico_listar():
         return ServicoDAO.listar()
-    def servico_listar_id():
-        return ServicoDAO.listar_id()
+    def servico_listar_id(id):
+        return ServicoDAO.listar_id(id)
     def servico_inserir(descricao, valor):
         servico = Servico(0, descricao, valor)
         ServicoDAO.inserir(servico)
@@ -60,7 +60,7 @@ class View:
         profissional = Profissional(0, nome, especialidade, conselho)
         ProfissionalDAO.inserir(profissional)
     def profissional_listar(): return ProfissionalDAO.listar()
-    def profissional_listar_id(): return ProfissionalDAO.listar_id()
+    def profissional_listar_id(id): return ProfissionalDAO.listar_id(id)
     def profissional_atualizar(id, nome, especialidade, conselho):
         profissional = Profissional(id, nome, especialidade, conselho)
         ProfissionalDAO.atualizar(profissional)
