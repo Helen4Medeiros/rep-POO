@@ -13,11 +13,11 @@ class LoginUI:
             elif c:
                 st.session_state["usuario_id"] = c["id"]
                 st.session_state["usuario_nome"] = c["nome"]
-                st.session_state["usuario_tipo"] = "cliente" # pega o tipo de usuário que faz o login, nesse caso, cliente
+                st.session_state["usuario_tipo"] = "cliente" 
                 st.rerun()
             elif p:
                 st.session_state["usuario_id"] = p["id"]
                 st.session_state["usuario_nome"] = p["nome"]
-                st.session_state["usuario_tipo"] = "profissional" # pega o tipo de usuário que faz o login, nesse caso, profissional
+                st.session_state["usuario_tipo"] = "profissional" 
                 st.rerun()
 
