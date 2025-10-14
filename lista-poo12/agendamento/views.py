@@ -1,4 +1,4 @@
-from models.servicos import Servico, ServicoDAO
+from models.servico import Servico, ServicoDAO
 from models.cliente import Cliente, ClienteDAO
 from models.horario import Horario, HorarioDAO
 from models.profissional import Profissional, ProfissionalDAO
