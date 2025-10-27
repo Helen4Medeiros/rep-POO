@@ -7,7 +7,7 @@ from templates.loginUI import LoginUI
 from templates.perfilclienteUI import PerfilClienteUI
 from templates.perfilprofissionalUI import PerfilProfissionalUI
 from templates.agendaprofissionalUI import AgendaProfissional
-from templates.agendaservicosUI import AgendaServicos
+from templates.agendaservicosUI import AgendaServicosUI
 from templates.veragendaUI import VerAgenda
 from templates.verservicosUI import VerServicos
 from templates.confirmarservicosUI import ConfirmarServicos
@@ -21,15 +21,17 @@ class IndexUI:
         if op == "Cadastro de Serviços": ManterServicoUI.main()
         if op == "Cadastro de Horários": ManterHorarioUI.main()
         if op == "Cadastro de Profissionais": ManterProfissionalUI.main()
+
     def menu_visitante():
         op = st.sidebar.selectbox("Menu", ["Entrar no Sistema", "Abrir Conta"])
         if op == "Entrar no Sistema": LoginUI.main()
         if op == "Abrir Conta": AbrirContaUI.main()
+
     def menu_cliente():
         op = st.sidebar.selectbox("Menu", ["Meus Dados", "Visualizar Serviços", "Agendar Serviço"])
         if op == "Meus Dados": PerfilClienteUI.main()
         if op == "Visualizar Serviços": VerServicos.main()
-        if op == "Agendar Serviços": AgendaServicos.main()
+        if op == "Agendar Serviços": AgendaServicosUI.main()
 
     def menu_profissional():
         op = st.sidebar.selectbox("Menu", ["Meus Dados", "Minha Agenda", "Abrir Agenda", "Confirmar Serviço"])

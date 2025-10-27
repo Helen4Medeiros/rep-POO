@@ -71,6 +71,15 @@ class View:
         c = Horario(id, None)
         HorarioDAO.excluir(c)
     
+    def horario_agendar_horario(id_profissional):
+        r = []
+        agora = dt.now()
+        for h in View.horario_listar():
+            if h.get_data() > agora and h.get_confirmado() == False and h.get_id_cliente() == 0 and h.get_id_profissional() == id_profissional:
+                r.append(h)
+        r.sort(key = lambda h: h.get_data())
+        return r
+
     # profissional
     def profissional_listar():
         return ProfissionalDAO.listar()
@@ -101,5 +110,32 @@ class View:
             View.horario_inserir(x, False, None, None, id)
             x += int_min
 
+    @staticmethod
+    def horarios_confirmar(id_profissional):
+        dic = []
+        for h in HorarioDAO.listar():
+            if (
+                h.get_id_profissional() == id_profissional and 
+                not h.get_confirmado() and 
+                h.get_id_cliente() != None
+            ):
+                cliente = ClienteDAO.listar_id(h.get_id_cliente())
+                servico = ServicoDAO.listar_id(h.get_id_servico())
+                dic.append({
+                    "id": h.get_id(),
+                    "data": h.get_data().strftime("%d/%m/%Y %H:%M"),
+                    "cliente": cliente.get_nome() if cliente else None,
+                    "servico": servico.get_descricao() if servico else None
+                })
+        return dic
+    
+    @staticmethod
+    def confirmar_horario(id_horario):
+        h = HorarioDAO.listar_id(id_horario)
+        if not h:
+            return False
+        h.set_confirmado(True)
+        HorarioDAO.atualizar(h)
+        return True
 
 
