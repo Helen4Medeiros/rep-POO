@@ -94,11 +94,11 @@ class View:
                 return {"id" : p.get_id(), "nome" : p.get_nome()}
     def profissional_agenda(data, inicio, fim, int, id):
         h_primeiro = dt.strptime(data + " " + inicio, "%d/%m/%Y %H:%M")
-        h_ultimo = dt.strptime(data + " " + fim, "%d/%m/¨%Y %H:%M")
+        h_ultimo = dt.strptime(data + " " + fim, "%d/%m/%Y %H:%M")
         int_min = timedelta(minutes = int)
         x = h_primeiro
         while x <= h_ultimo:
-            View.horario_inserir(data, False, None, None, id)
+            View.horario_inserir(x, False, None, None, id)
             x += int_min
 
 
