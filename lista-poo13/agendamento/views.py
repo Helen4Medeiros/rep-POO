@@ -13,12 +13,41 @@ class View:
     def cliente_listar_objetos():
         return ClienteDAO.listar_clientes()
     def cliente_inserir(nome, email, fone, senha):
+        if not nome:
+            raise ValueError("O nome do cliente é obrigatório.")
+        if not email:
+            raise ValueError("O e-mail do cliente é obrigatório.")
+        if not senha:
+            raise ValueError("A senha do cliente é obrigatória.")
+
+        if email.strip().lower() == "admin":
+            raise ValueError("O e-mail 'admin' é reservado ao administrador.")
+        
+        for c in ClienteDAO.listar():
+            if c.get_email().strip().lower() == email.strip().lower() and c.get_id() != id:
+                raise ValueError("Já existe outro cliente com esse e-mail.")
+            
         cliente = Cliente(0, nome, email, fone, senha)
         ClienteDAO.inserir(cliente)
     def cliente_atualizar(id, nome, email, fone, senha):
+        email = email.strip().lower()
+        if email == "admin":
+            raise ValueError("O email 'admin' é reservado ao administrador.")
+        
+        for c in ClienteDAO.listar():
+            if c.get_email() == email:
+                raise ValueError("Já existe um cliente com esse email.")
+            
+        for p in ProfissionalDAO.listar():
+            if p.get_email() == email:
+                raise ValueError('Já existe um profissional com esse email.')
+
         cliente = Cliente(id, nome, email, fone, senha)
         ClienteDAO.atualizar(cliente)
     def cliente_excluir(id):
+        for h in HorarioDAO.listar():
+            if h.get_id_cliente() == id:
+                raise ValueError("Não é possível excluir um cliente com horários agendados.")
         cliente = Cliente(id, "", "", "", "")
         ClienteDAO.excluir(cliente)
     def cliente_listar_id(id):
