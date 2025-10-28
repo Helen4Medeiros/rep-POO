@@ -81,6 +81,10 @@ class View:
 
     # horario
     def horario_inserir(data, confirmado, id_cliente, id_servico, id_profissional):
+        for h in HorarioDAO.listar():
+            if h.get_data() == data and h.get_id_profissional() == id_profissional:
+                raise ValueError("Já existe um horário marcado para este profissional nesta data e hora.")
+
         c = Horario(0, data)
         c.set_confirmado(confirmado)
         c.set_id_cliente(id_cliente)
@@ -90,6 +94,10 @@ class View:
     def horario_listar():
         return HorarioDAO.listar()
     def horario_atualizar(id, data, confirmado, id_cliente, id_servico, id_profissional):
+        for h in HorarioDAO.listar():
+            if h.get_data() == data and h.get_id_profissional() == id_profissional:
+                raise ValueError("Já existe outro horário marcado para este profissional nesta data e hora.")
+
         c = Horario(id, data)
         c.set_confirmado(confirmado)
         c.set_id_cliente(id_cliente)
@@ -97,6 +105,11 @@ class View:
         c.set_id_profissional(id_profissional)
         HorarioDAO.atualizar(c)
     def horario_excluir(id):
+        h = HorarioDAO.listar_id(id)
+        if h is None:
+            raise ValueError("Horário não encontrado.")
+        if h.get_id_cliente() != 0:
+            raise ValueError("Não é possível excluir um horário que já foi agendado por um cliente.")
         c = Horario(id, None)
         HorarioDAO.excluir(c)
     

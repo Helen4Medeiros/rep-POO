@@ -10,7 +10,12 @@ class AgendaProfissional:
         hf = st.text_input("Informe o horário final no formato HH:MM")
         inter = st.text_input("Informe o intervalo entre os horários (mins)")
         if st.button("Abrir Agenda"):
-            View.profissional_agenda(data, hi, hf, int(inter), st.session_state["usuario_id"])
-            st.success("Agenda criada com sucesso")
-            time.sleep(2)
-            st.rerun()
+            try:
+              View.profissional_agenda(data, hi, hf, int(inter), st.session_state["usuario_id"])
+              st.success("Agenda criada com sucesso")
+              time.sleep(2)
+              st.rerun()
+            except ValueError as e:
+                st.error(f"Erro: {e}")
+            except Exception as e:
+                st.error(f"Ocorreu um erro inesperado: {e}")

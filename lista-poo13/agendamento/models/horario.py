@@ -19,9 +19,20 @@ class Horario:
     def get_id_servico(self): return self.__id_servico
     def get_id_profissional(self): return self.__id_profissional
 
-    def set_id(self, id): self.__id = id
-    def set_data(self, data): self.__data = data
-    def set_confirmado(self, confirmado): self.__confirmado = confirmado
+    def set_id(self, id): 
+        if not isinstance(id, int) or id < 0:
+            raise ValueError("O id deve ser um número inteiro não negativo.")
+        self.__id = id
+    def set_data(self, data): 
+        if not isinstance(data, datetime):
+            raise TypeError("A data deve ser um objeto datetime.")
+        if data.year < 2025:
+            raise ValueError("Não é permitido com ano anterior a 2025.")
+        self.__data = data
+    def set_confirmado(self, confirmado): 
+        if not isinstance(confirmado, bool):
+            raise TypeError("Confirmado deve ser True ou False.")
+        self.__confirmado = confirmado
     def set_id_cliente(self, id_cliente): self.__id_cliente = id_cliente
     def set_id_servico(self, id_servico): self.__id_servico = id_servico
     def set_id_profissional(self, id_profissional): self.__id_profissional = id_profissional
