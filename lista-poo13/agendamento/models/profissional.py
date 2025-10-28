@@ -24,20 +24,25 @@ class Profissional:
         if id < 0: raise ValueError()
         else: self.__id = id
     def set_nome(self, nome):
-        if nome == "": raise ValueError()
-        else: self.__nome = nome
+        if not nome.strip():
+            raise ValueError('O nome do profissional é obrigatório.')
+        self.__nome = nome
     def set_email(self, email):
-        if email == "": raise ValueError()
-        else: self.__email = email
+        if not email.strip():
+            raise ValueError("O email do profissional é obrigatório.")
+        self.__email = email
     def set_especialidade(self, especialidade):
-        if especialidade == "": raise ValueError()
-        else: self.__especialidade = especialidade
+        if not especialidade.strip():
+            raise ValueError("O especialidade do profissional é obrigatório.")
+        self.__especialidade = especialidade
     def set_conselho(self, conselho):
-        if conselho == "": raise ValueError()
-        else: self.__conselho = conselho
+        if not conselho.strip():
+            raise ValueError("O conselho do profissional é obrigatório.")
+        self.__conselho = conselho
     def set_senha(self, senha):
-        if senha == "": raise ValueError()
-        else: self.__senha = senha
+        if not senha.strip():
+            raise ValueError("A senha do profissional é obrigatória.")
+        self.__senha = senha
 
 
     def __str__(self):

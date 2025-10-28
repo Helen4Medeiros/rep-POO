@@ -115,12 +115,47 @@ class View:
     def profissional_listar_profissionais():
         return ProfissionalDAO.listar_profissionais()
     def profissional_inserir(nome, especialidade, conselho, email, senha):
+        if not nome.strip():
+            raise ValueError("O nome do profissional é obrigatório.")
+        if not email.strip():
+            raise ValueError("O e-mail do profissional é obrigatório.")
+        if not senha.strip():
+            raise ValueError("A senha do profissional é obrigatória.")
+        if email.strip().lower() == "admin":
+            raise ValueError("O e-mail 'admin' é reservado ao administrador.")
+    
+        for c in View.cliente_listar():  
+            if c.get_email().strip().lower() == email.strip().lower():
+                raise ValueError("Já existe um cliente com este e-mail.")
+        for p in ProfissionalDAO.listar():  
+            if p.get_email().strip().lower() == email.strip().lower():
+                raise ValueError("Já existe um profissional com este e-mail.")
+        
         profissional = Profissional(0, nome, especialidade, conselho, email, senha)
         ProfissionalDAO.inserir(profissional)
     def profissional_atualizar(id, nome, especialidade, conselho, email, senha):
+        if not nome.strip():
+            raise ValueError("O nome do profissional é obrigatório.")
+        if not email.strip():
+            raise ValueError("O e-mail do profissional é obrigatório.")
+        if not senha.strip():
+            raise ValueError("A senha do profissional é obrigatória.")
+        if email.strip().lower() == "admin":
+            raise ValueError("O e-mail 'admin' é reservado ao administrador.")
+    
+        for c in View.cliente_listar():  
+            if c.get_email().strip().lower() == email.strip().lower():
+                raise ValueError("Já existe um cliente com este e-mail.")
+        for p in ProfissionalDAO.listar():  
+            if p.get_email().strip().lower() == email.strip().lower():
+                raise ValueError("Já existe um profissional com este e-mail.")
+
         profissional = Profissional(id, nome, especialidade, conselho, email, senha)
         ProfissionalDAO.atualizar(profissional)
     def profissional_excluir(id):
+        for h in HorarioDAO.listar():
+            if h.get_id_profissional() == id:
+                raise ValueError("Não é possível excluir um profissional com horários agendados.")
         profissional = Profissional(id, "", "", "", "", "")
         ProfissionalDAO.excluir(profissional)
     def profissional_listar_id(id):
