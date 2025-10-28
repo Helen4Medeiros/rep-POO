@@ -28,7 +28,7 @@ class IndexUI:
         if op == "Abrir Conta": AbrirContaUI.main()
 
     def menu_cliente():
-        op = st.sidebar.selectbox("Menu", ["Meus Dados", "Visualizar Serviços", "Agendar Serviço"])
+        op = st.sidebar.selectbox("Menu", ["Meus Dados", "Visualizar Serviços", "Agendar Serviços"])
         if op == "Meus Dados": PerfilClienteUI.main()
         if op == "Visualizar Serviços": VerServicos.main()
         if op == "Agendar Serviços": AgendaServicosUI.main()
