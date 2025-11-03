@@ -2,6 +2,7 @@ from models.servico import Servico, ServicoDAO
 from models.cliente import Cliente, ClienteDAO
 from models.horario import Horario, HorarioDAO
 from models.profissional import Profissional, ProfissionalDAO
+from models.avaliacao import Avaliacao, AvaliacaoDAO
 from datetime import datetime as dt
 from datetime import timedelta
 
@@ -172,5 +173,45 @@ class View:
         h.set_confirmado(True)
         HorarioDAO.atualizar(h)
         return True
+    
+    # avaliação
+    def avaliacao_listar_profissionais_para_avaliar(id_cliente):
+        profissionais_para_avaliar = []
+        profissionais_avaliados = []
+
+        for av in AvaliacaoDAO.listar():
+            if av.get_id_cliente() == id_cliente:
+                profissionais_avaliados.append(av.get_id_profissional())
+        
+        agora = dt.now()
+        for h in HorarioDAO.listar():
+            if (
+                h.get_confirmado() and 
+                h.get_data() < agora and 
+                h.get_id_cliente() == id_cliente and
+                h.get_id_profissional() not in profissionais_avaliados 
+            ):
+                profissional = ProfissionalDAO.listar_id(h.get_id_profissional())
+                if profissional and profissional.get_id() not in [p['id'] for p in profissionais_para_avaliar]:
+                    profissionais_para_avaliar.append({
+                        "id": profissional.get_id(),
+                        "nome": profissional.get_nome(),
+                        "especialidade": profissional.get_especialidade()
+                    })
+
+        return profissionais_para_avaliar
+
+    def avaliacao_inserir(nota, comentario, id_cliente, id_profissional):
+        if AvaliacaoDAO.verificar_avaliacao_existente(id_cliente, id_profissional):
+            raise ValueError("Você já avaliou este profissional.")
+            
+        if not (0 <= nota <= 5):
+            raise ValueError("A nota deve ser entre 0 e 5.")
+            
+        avaliacao = Avaliacao(0, nota, comentario, id_cliente, id_profissional)
+        AvaliacaoDAO.inserir(avaliacao)
+        
+    def profissional_obter_media_avaliacao(id_profissional):
+        return AvaliacaoDAO.calcular_media_profissional(id_profissional)
 
 

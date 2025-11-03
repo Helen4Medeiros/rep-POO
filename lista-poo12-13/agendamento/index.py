@@ -8,6 +8,7 @@ from templates.perfilclienteUI import PerfilClienteUI
 from templates.perfilprofissionalUI import PerfilProfissionalUI
 from templates.agendaprofissionalUI import AgendaProfissional
 from templates.agendaservicosUI import AgendaServicosUI
+from templates.avaliarprofissionalUI import AvaliarProfissionalUI
 from templates.veragendaUI import VerAgenda
 from templates.verservicosUI import VerServicos
 from templates.confirmarservicosUI import ConfirmarServicos
@@ -28,10 +29,11 @@ class IndexUI:
         if op == "Abrir Conta": AbrirContaUI.main()
 
     def menu_cliente():
-        op = st.sidebar.selectbox("Menu", ["Meus Dados", "Visualizar Serviços", "Agendar Serviços"])
+        op = st.sidebar.selectbox("Menu", ["Meus Dados", "Visualizar Serviços", "Agendar Serviços", "Avaliar Profissionais"])
         if op == "Meus Dados": PerfilClienteUI.main()
         if op == "Visualizar Serviços": VerServicos.main()
         if op == "Agendar Serviços": AgendaServicosUI.main()
+        if op == "Avaliar Profissionais": AvaliarProfissionalUI.main()
 
     def menu_profissional():
         op = st.sidebar.selectbox("Menu", ["Meus Dados", "Minha Agenda", "Abrir Agenda", "Confirmar Serviço"])
