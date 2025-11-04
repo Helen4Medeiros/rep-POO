@@ -23,6 +23,15 @@ class Avaliacao:
     def set_id_cliente(self, id_cliente): self.__id_cliente = id_cliente
     def set_id_profissional(self, id_profissional): self.__id_profissional = id_profissional
 
+    def to_json(self):
+        dic = {"id": self.__id, "nota": self.__nota, "comentario": self.__comentario, 
+            "id_cliente": self.__id_cliente, "id_profissional": self.__id_profissional}
+        return dic
+    
+    @staticmethod
+    def from_json(dic):
+        return Avaliacao(dic["id"], dic["nota"], dic["comentario"], dic["id_cliente"], dic["id_profissional"])
+
 from models.dao import DAO
 import json
 

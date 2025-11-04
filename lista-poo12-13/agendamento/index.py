@@ -11,9 +11,10 @@ from templates.agendaservicosUI import AgendaServicosUI
 from templates.avaliarprofissionalUI import AvaliarProfissionalUI
 from templates.veragendaUI import VerAgenda
 from templates.verservicosUI import VerServicos
+from templates.veravaliacoesUI import VerAvaliacoesUI
 from templates.confirmarservicosUI import ConfirmarServicos
 from views import View
-import streamlit as st
+import streamlit as st # type: ignore
 
 class IndexUI:
     def menu_admin():            
@@ -36,11 +37,12 @@ class IndexUI:
         if op == "Avaliar Profissionais": AvaliarProfissionalUI.main()
 
     def menu_profissional():
-        op = st.sidebar.selectbox("Menu", ["Meus Dados", "Minha Agenda", "Abrir Agenda", "Confirmar Serviço"])
+        op = st.sidebar.selectbox("Menu", ["Meus Dados", "Minha Agenda", "Abrir Agenda", "Confirmar Serviço", "Minhas Avaliações"])
         if op == "Meus Dados": PerfilProfissionalUI.main()
         if op == "Minha Agenda": VerAgenda.main()
         if op == "Abrir Agenda": AgendaProfissional.main()
         if op == 'Confirmar Serviço': ConfirmarServicos.main()
+        if op == "Minhas Avaliações": VerAvaliacoesUI.main()
 
     def sidebar():
         if "usuario_id" not in st.session_state:
@@ -64,4 +66,5 @@ class IndexUI:
             del st.session_state["usuario_id"]
             del st.session_state["usuario_nome"]
             st.rerun()
+
 IndexUI.main()

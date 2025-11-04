@@ -5,6 +5,7 @@ from models.profissional import Profissional, ProfissionalDAO
 from models.avaliacao import Avaliacao, AvaliacaoDAO
 from datetime import datetime as dt
 from datetime import timedelta
+import pandas as pd
 
 class View:
         
@@ -146,6 +147,10 @@ class View:
             View.horario_inserir(x, False, None, None, id)
             x += int_min
 
+    # média das avaliações do profissional
+    def profissional_media_avaliacao(id_profissional):
+        return AvaliacaoDAO.calcular_media_profissional(id_profissional)
+
     @staticmethod
     def horarios_confirmar(id_profissional):
         dic = []
@@ -175,32 +180,18 @@ class View:
         return True
     
     # avaliação
-    def avaliacao_listar_profissionais_para_avaliar(id_cliente):
-        """
-        Lista profissionais com agendamentos confirmados pelo cliente,
-        que ainda não foram avaliados.
-        """
-        
-        # 1. Encontrar todos os IDs de profissionais que o cliente JÁ AVALIOU.
-        # Usa um set comprehension para eficiência
+    def avaliacao_listar_profissionais(id_cliente):
         ids_avaliados = {
             av.get_id_profissional() 
             for av in AvaliacaoDAO.listar() 
             if av.get_id_cliente() == id_cliente
         }
         
-        # 2. Encontrar todos os IDs de profissionais que o cliente tem um AGENDAMENTO CONFIRMADO.
         ids_com_agendamento_confirmado = set()
         for h in HorarioDAO.listar():
-            # A lógica é AGORA: (Agendamento é meu AND Agendamento está Confirmado)
-            if (h.get_id_cliente() == id_cliente and 
-                h.get_confirmado()
-            ):
+            if (h.get_id_cliente() == id_cliente and h.get_confirmado()):
                 ids_com_agendamento_confirmado.add(h.get_id_profissional())
                 
-        # 3. Determinar os IDs finais: Confirmado MENOS Avaliado.
-        # Esta operação de set garante que um profissional com N agendamentos confirmados
-        # só apareça se NENHUMA avaliação tiver sido submetida.
         ids_para_avaliar = ids_com_agendamento_confirmado - ids_avaliados
         
         profissionais_para_avaliar = []
@@ -216,17 +207,31 @@ class View:
         
         return profissionais_para_avaliar
 
+    def avaliacao_listar_por_profissionais(id_profissional):
+        avaliacoes = AvaliacaoDAO.listar_por_profissional(id_profissional)
+
+        dados_formatados = []
+        for av in avaliacoes:
+            dados_formatados.append({
+                "Nota": av.get_nota(),
+                "Comentário": av.get_comentario() if av.get_comentario() else "Sem comentário"
+            })
+        
+        if not dados_formatados:
+            return pd.DataFrame() 
+            
+        df = pd.DataFrame(dados_formatados)
+        return df
+
     def avaliacao_inserir(nota, comentario, id_cliente, id_profissional):
         if AvaliacaoDAO.verificar_avaliacao_existente(id_cliente, id_profissional):
             raise ValueError("Você já avaliou este profissional.")
             
         if not (0 <= nota <= 5):
-            raise ValueError("A nota deve ser entre 0 e 5.")
+            raise ValueError("A nota deve ser 0-5.")
             
         avaliacao = Avaliacao(0, nota, comentario, id_cliente, id_profissional)
         AvaliacaoDAO.inserir(avaliacao)
         
-    def profissional_obter_media_avaliacao(id_profissional):
-        return AvaliacaoDAO.calcular_media_profissional(id_profissional)
 
 
