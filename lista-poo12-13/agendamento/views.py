@@ -176,29 +176,44 @@ class View:
     
     # avaliação
     def avaliacao_listar_profissionais_para_avaliar(id_cliente):
-        profissionais_para_avaliar = []
-        profissionais_avaliados = []
-
-        for av in AvaliacaoDAO.listar():
-            if av.get_id_cliente() == id_cliente:
-                profissionais_avaliados.append(av.get_id_profissional())
+        """
+        Lista profissionais com agendamentos confirmados pelo cliente,
+        que ainda não foram avaliados.
+        """
         
-        agora = dt.now()
+        # 1. Encontrar todos os IDs de profissionais que o cliente JÁ AVALIOU.
+        # Usa um set comprehension para eficiência
+        ids_avaliados = {
+            av.get_id_profissional() 
+            for av in AvaliacaoDAO.listar() 
+            if av.get_id_cliente() == id_cliente
+        }
+        
+        # 2. Encontrar todos os IDs de profissionais que o cliente tem um AGENDAMENTO CONFIRMADO.
+        ids_com_agendamento_confirmado = set()
         for h in HorarioDAO.listar():
-            if (
-                h.get_confirmado() and 
-                h.get_data() < agora and 
-                h.get_id_cliente() == id_cliente and
-                h.get_id_profissional() not in profissionais_avaliados 
+            # A lógica é AGORA: (Agendamento é meu AND Agendamento está Confirmado)
+            if (h.get_id_cliente() == id_cliente and 
+                h.get_confirmado()
             ):
-                profissional = ProfissionalDAO.listar_id(h.get_id_profissional())
-                if profissional and profissional.get_id() not in [p['id'] for p in profissionais_para_avaliar]:
-                    profissionais_para_avaliar.append({
-                        "id": profissional.get_id(),
-                        "nome": profissional.get_nome(),
-                        "especialidade": profissional.get_especialidade()
-                    })
-
+                ids_com_agendamento_confirmado.add(h.get_id_profissional())
+                
+        # 3. Determinar os IDs finais: Confirmado MENOS Avaliado.
+        # Esta operação de set garante que um profissional com N agendamentos confirmados
+        # só apareça se NENHUMA avaliação tiver sido submetida.
+        ids_para_avaliar = ids_com_agendamento_confirmado - ids_avaliados
+        
+        profissionais_para_avaliar = []
+        
+        for id_profissional in ids_para_avaliar:
+            profissional = ProfissionalDAO.listar_id(id_profissional)
+            if profissional:
+                profissionais_para_avaliar.append({
+                    "id": profissional.get_id(),
+                    "nome": profissional.get_nome(),
+                    "especialidade": profissional.get_especialidade()
+                })
+        
         return profissionais_para_avaliar
 
     def avaliacao_inserir(nota, comentario, id_cliente, id_profissional):
