@@ -17,7 +17,10 @@ class ManterProfissionalUI:
         if len(profissional) == 0: st.write('Nenhum profissional cadastrado')
         else: 
             list_dic = []
-            for obj in profissional: list_dic.append(obj.to_json())
+            for obj in profissional: 
+                dados = obj.to_json()
+                del dados['senha']
+                list_dic.append(dados)
             df = pd.DataFrame(list_dic)
             st.dataframe(df)
     
