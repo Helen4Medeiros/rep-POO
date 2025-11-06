@@ -1,5 +1,4 @@
-import streamlit as st
-import pandas as pd
+import streamlit as st #type: ignore
 import time
 from views import View
 
